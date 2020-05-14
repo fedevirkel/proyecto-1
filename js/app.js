@@ -2,15 +2,11 @@ const maxPasswords = 5;
 function validatePassword(element) {
 
     password = element.parentElement.getElementsByClassName("check-txt")[0].value;
-
+    document.querySelector('.bg-modal').style.display = "flex";
     if (password.length === 0) {
         window.alert("No password inserted");
         password = ' ';
     }
-
-
-    if(!window.localStorage.getItem('1') === (''))
-        initLocalStorage();
     
     saveNewPassword(password);
 
@@ -37,23 +33,30 @@ function validatePassword(element) {
     
     let passwordLevel = 'Your password level is: ';
     //show security level
+    security = '';
     switch(matchs){
         case 0 :
-            window.alert('Just change your password, please.');
+            security = 'Just change your password, please.';
             break;
         case 1 :
-            window.alert(passwordLevel+'WEAK');
+            security = passwordLevel+'WEAK';
             break;
         case 2 :
-            window.alert(passwordLevel+'MEDIUM');
+            security = passwordLevel+'MEDIUM';
             break;
         case 3 :
-            window.alert(passwordLevel+'STRONG');
+            security = passwordLevel+'STRONG';
             break;
         case 4 :
-            window.alert(passwordLevel+'VERY STRONG you are unhackeable bro!');
+            security = passwordLevel+'VERY STRONG you are unhackeable bro!';
             break;
     }
+
+
+    modal = document.getElementsByClassName("password-level")[0];
+    modal.innerHTML = '<tr><td> '+security+' </td></tr>';
+
+    document.querySelector('.bg-modal').style.display = "flex";
 
     element.parentElement.getElementsByClassName("check-txt")[0].value="";  
 
@@ -89,8 +92,15 @@ function updateLastFive(){
     for(let i = 1 ; i <= maxPasswords ; i++){
         content += '<tr><td>'+i+') '+window.localStorage.getItem(i)+'</td></tr>';
     }
-
     table.innerHTML = content;
 }
 
+
+if(window.localStorage.getItem('1') === null)
+    initLocalStorage();
+
 updateLastFive();
+
+document.querySelector('.close').addEventListener("click", function() {
+	document.querySelector('.bg-modal').style.display = "none";
+});
